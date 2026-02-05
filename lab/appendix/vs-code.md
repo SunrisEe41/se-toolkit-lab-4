@@ -125,6 +125,14 @@ Docs:
 
 - [docs](https://code.visualstudio.com/docs/configure/extensions/extension-marketplace)
 
+Install recommended extensions:
+
+1. Go to the [`Activity Bar`](./appendix/vs-code.md#activity-bar).
+2. Click the icon `Extensions`. Alternatively, press `Ctrl+Shift+X` (`Cmd+Shift+G` on `macOS`).
+3. In the input field, type `@recommended`.
+4. Look at `WORKSPACE RECOMMENDATIONS`.
+5. Click the icon `Install Workspace Recommended extensions`.
+
 ## `Custom Layout`
 
 Change the [Basic Layout](#basic-layout).

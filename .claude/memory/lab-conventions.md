@@ -1,6 +1,6 @@
 # Lab authoring conventions (condensed)
 
-Source of truth: `lab/design/create-lab.md`
+Source of truth: `lab/lab-design/create-lab.md`
 
 ## Task document structure (§3)
 

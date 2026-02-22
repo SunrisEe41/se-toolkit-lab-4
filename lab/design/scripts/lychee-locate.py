@@ -59,9 +59,9 @@ def find_locations(filepath: str, url: str) -> list[tuple[int, int, str]]:
                 m = pattern.search(line)
                 if m:
                     start = m.start()
-                    # Adjust for a relative path prefix (e.g. "./" or "../") that
+                    # Adjust for a relative path prefix (e.g. "./foo/bar/") that
                     # precedes the basename but was stripped when we split on "/".
-                    prefix_match = re.search(r'(?:\.\.?/)+$', line[:start])
+                    prefix_match = re.search(r'(?:\.\.?/|[\w.-]+/)+$', line[:start])
                     if prefix_match:
                         start = prefix_match.start()
                     raw_link = line[start:m.end()].rstrip()

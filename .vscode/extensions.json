@@ -1,5 +1,8 @@
 {
   "recommendations": [
+    // Direnv support
+    "mkhl.direnv",
+    
     // Nix language support
     "jnoortheen.nix-ide",
     

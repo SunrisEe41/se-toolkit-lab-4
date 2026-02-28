@@ -30,12 +30,12 @@ jobs:
         run: uv run poe test
 
       - name: Start services for e2e tests
-        run: docker compose --env-file .env.docker.secret up -d
+        run: docker compose --env-file .env.docker.example up -d
 
       - name: Wait for services to be healthy
         run: |
           sleep 10
-          docker compose --env-file .env.docker.secret ps
+          docker compose --env-file .env.docker.example ps
 
       - name: Run end-to-end tests
         env:
@@ -45,7 +45,7 @@ jobs:
 
       - name: Stop services
         if: always()
-        run: docker compose --env-file ..env.docker.secret down -v
+        run: docker compose --env-file ..env.docker.example down -v
 
   publish:
     needs: test

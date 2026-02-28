@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - '**'  # Run on all branches
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install dependencies
+        run: uv sync --frozen
+
+      - name: Run back-end unit tests
+        run: uv run poe test
+
+      - name: Start services for e2e tests
+        run: docker compose --env-file .env.docker.example up -d
+
+      - name: Wait for services to be healthy
+        run: |
+          sleep 10
+          docker compose --env-file .env.docker.example ps
+
+      - name: Run end-to-end tests
+        env:
+          API_BASE_URL: http://127.0.0.1:42001
+          API_TOKEN: my-secret-api-key
+        run: uv run poe test-e2e
+
+      - name: Stop services
+        if: always()
+        run: docker compose --env-file .env.docker.example down -v
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/se-toolkit-lab:${{ github.sha }} .
+
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/se-toolkit-lab:${{ github.sha }}

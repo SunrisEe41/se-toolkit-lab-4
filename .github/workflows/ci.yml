@@ -45,7 +45,7 @@ jobs:
 
       - name: Stop services
         if: always()
-        run: docker compose --env-file ..env.docker.example down -v
+        run: docker compose --env-file .env.docker.example down -v
 
   publish:
     needs: test
